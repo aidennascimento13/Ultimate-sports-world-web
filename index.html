@@ -1,0 +1,1214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ultimate Sports World | Las Vegas Sports Theme Park</title>
+  <meta name="description" content="Ultimate Sports World — Las Vegas's ultimate sports theme park. 6 themed lands, world-class rides, VIP experiences, and game-day dining. No off-season." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────── */
+    :root {
+      --navy:   #05112a;
+      --navy2:  #0a1f44;
+      --red:    #c8102e;
+      --red2:   #e5152f;
+      --gold:   #f5a623;
+      --white:  #ffffff;
+      --offwhite: #f0f2f7;
+      --muted:  #8a97b0;
+      --card-bg: #0d2150;
+      --card-border: rgba(255,255,255,.08);
+      --radius: 12px;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --max: 1180px;
+      --ease: cubic-bezier(.22,1,.36,1);
+    }
+
+    /* ─── RESET ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── SKIP LINK ──────────────────────────────────── */
+    .skip {
+      position: absolute; top: -100px; left: 1rem;
+      background: var(--red); color: #fff; padding: .5rem 1rem;
+      border-radius: 4px; font-weight: 700; z-index: 9999;
+      transition: top .2s;
+    }
+    .skip:focus { top: 1rem; }
+
+    /* ─── SCROLLBAR ──────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+    /* ─── CONTAINER ──────────────────────────────────── */
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ─── HEADER ─────────────────────────────────────── */
+    .header {
+      position: sticky; top: 0; z-index: 900;
+      background: rgba(5,17,42,.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(200,16,46,.35);
+    }
+    .header__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px; gap: 1.5rem;
+    }
+
+    .brand { display: flex; align-items: center; gap: .75rem; flex-shrink: 0; }
+    .brand__mark {
+      width: 44px; height: 44px;
+      background: var(--red);
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 1.4rem;
+      box-shadow: 0 0 18px rgba(200,16,46,.5);
+    }
+    .brand__name {
+      font-family: var(--font-display);
+      font-size: 1.5rem; font-weight: 800;
+      letter-spacing: .03em; line-height: 1;
+      text-transform: uppercase;
+    }
+    .brand__tag {
+      font-size: .65rem; font-weight: 600;
+      letter-spacing: .12em; color: var(--gold);
+      text-transform: uppercase; margin-top: 2px;
+    }
+
+    .nav {
+      display: flex; align-items: center; gap: .15rem; flex-wrap: wrap;
+    }
+    .nav a {
+      font-family: var(--font-display);
+      font-size: .95rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: .4rem .65rem;
+      border-radius: 6px;
+      color: rgba(255,255,255,.78);
+      transition: color .2s, background .2s;
+      white-space: nowrap;
+    }
+    .nav a:hover { color: #fff; background: rgba(200,16,46,.25); }
+    .nav a.active { color: var(--gold); }
+
+    .nav__cta {
+      background: var(--red) !important; color: #fff !important;
+      padding: .4rem 1rem !important; border-radius: 6px !important;
+      margin-left: .5rem;
+      box-shadow: 0 4px 14px rgba(200,16,46,.4);
+      transition: transform .15s, box-shadow .15s !important;
+    }
+    .nav__cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(200,16,46,.55) !important;
+      background: var(--red2) !important;
+    }
+
+    .navToggle {
+      display: none; flex-direction: column; justify-content: center; align-items: center;
+      gap: 5px; width: 40px; height: 40px;
+      background: transparent; border: 1px solid rgba(255,255,255,.2); border-radius: 8px;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .navToggle span {
+      display: block; width: 20px; height: 2px;
+      background: #fff; border-radius: 2px;
+      transition: transform .25s, opacity .25s;
+    }
+
+    /* ─── HERO ───────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 68px);
+      display: flex; align-items: center;
+      overflow: hidden;
+    }
+
+    /* Animated gradient background */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200,16,46,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(10,31,68,.9) 0%, transparent 60%),
+        linear-gradient(135deg, #05112a 0%, #0a1f44 50%, #051020 100%);
+    }
+
+    /* Diagonal stripe texture */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 30px,
+        rgba(255,255,255,.015) 30px,
+        rgba(255,255,255,.015) 31px
+      );
+      pointer-events: none;
+    }
+
+    .hero__grid {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 4rem; align-items: center;
+      padding: 6rem 1.5rem;
+    }
+
+    .pill {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(245,166,35,.12);
+      border: 1px solid rgba(245,166,35,.3);
+      color: var(--gold); font-weight: 600;
+      font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+      padding: .35rem .9rem; border-radius: 100px;
+      margin-bottom: 1.2rem;
+    }
+    .pill::before { content: '📍'; font-size: .9rem; }
+
+    .hero__copy h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-weight: 900; line-height: .95;
+      letter-spacing: -.01em;
+      text-transform: uppercase;
+    }
+    .hero__copy h1 em {
+      font-style: normal; color: var(--red);
+      display: block;
+    }
+    .hero__copy p {
+      margin-top: 1.4rem;
+      font-size: 1.15rem; line-height: 1.65;
+      color: rgba(255,255,255,.72); max-width: 520px;
+    }
+
+    .hero__cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      margin-top: 2.4rem;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 1rem; letter-spacing: .06em; text-transform: uppercase;
+      padding: .85rem 2rem; border-radius: 8px;
+      transition: transform .15s var(--ease), box-shadow .15s var(--ease), background .15s;
+      white-space: nowrap; cursor: pointer; border: 2px solid transparent;
+    }
+    .btn--primary {
+      background: var(--red); color: #fff;
+      box-shadow: 0 6px 24px rgba(200,16,46,.45);
+    }
+    .btn--primary:hover { background: var(--red2); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(200,16,46,.55); }
+    .btn--ghost {
+      background: transparent; color: #fff;
+      border-color: rgba(255,255,255,.35);
+    }
+    .btn--ghost:hover { background: rgba(255,255,255,.08); transform: translateY(-2px); }
+    .btn--full { width: 100%; justify-content: center; }
+    .btn--gold {
+      background: var(--gold); color: var(--navy);
+      box-shadow: 0 6px 24px rgba(245,166,35,.35);
+    }
+    .btn--gold:hover { background: #f0b93a; transform: translateY(-2px); }
+
+    /* Stats bar */
+    .hero__stats {
+      display: flex; gap: 2rem; margin-top: 3rem; flex-wrap: wrap;
+    }
+    .stat { display: flex; flex-direction: column; gap: .2rem; }
+    .stat__num {
+      font-family: var(--font-display); font-size: 2.2rem; font-weight: 900;
+      line-height: 1; color: var(--white);
+    }
+    .stat__num span { color: var(--red); }
+    .stat__label { font-size: .75rem; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; }
+
+    /* Hero card */
+    .hero__card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px;
+      padding: 2.5rem;
+      backdrop-filter: blur(8px);
+      position: relative; overflow: hidden;
+    }
+    .hero__card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--gold));
+    }
+    .hero__card h3 {
+      font-family: var(--font-display); font-size: 1.5rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .04em;
+      color: var(--gold); margin-bottom: 1.5rem;
+    }
+    .card-stat {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .85rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .card-stat:last-child { border-bottom: none; }
+    .card-stat__label { font-size: .9rem; color: rgba(255,255,255,.7); }
+    .card-stat__val {
+      font-family: var(--font-display); font-size: 1.35rem; font-weight: 800;
+      color: #fff;
+    }
+    .card-stat__val.red { color: var(--red); }
+    .card-stat__val.gold { color: var(--gold); }
+
+    /* ─── SECTION BASE ───────────────────────────────── */
+    .section { padding: 6rem 0; }
+    .section.alt { background: #070e20; }
+    .section__head {
+      text-align: center; margin-bottom: 3.5rem;
+    }
+    .section__head .eyebrow {
+      font-family: var(--font-display); font-size: .8rem; font-weight: 700;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--red);
+      margin-bottom: .75rem;
+    }
+    .section__head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900; text-transform: uppercase; line-height: 1;
+      color: #fff;
+    }
+    .section__head p {
+      margin-top: .9rem; font-size: 1.05rem; color: var(--muted); max-width: 560px; margin-inline: auto;
+    }
+    .divider {
+      width: 48px; height: 4px;
+      background: linear-gradient(90deg, var(--red), var(--gold));
+      border-radius: 2px; margin: 1rem auto 0;
+    }
+
+    /* ─── GRIDS ──────────────────────────────────────── */
+    .grid { display: grid; gap: 1.25rem; }
+    .grid--2 { grid-template-columns: repeat(2, 1fr); }
+    .grid--3 { grid-template-columns: repeat(3, 1fr); }
+    .grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+    /* ─── CARDS ──────────────────────────────────────── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: transform .2s var(--ease), border-color .2s, box-shadow .2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(200,16,46,.3);
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+    }
+    .card h3 {
+      font-family: var(--font-display); font-size: 1.35rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .03em;
+      color: #fff; margin-bottom: .5rem;
+    }
+    .card p { color: var(--muted); font-size: .92rem; line-height: 1.6; }
+
+    /* Land cards */
+    .card--land { position: relative; overflow: hidden; }
+    .card--land::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--gold));
+    }
+    .tag {
+      display: inline-block;
+      font-family: var(--font-display); font-size: .7rem; font-weight: 800;
+      letter-spacing: .15em; text-transform: uppercase;
+      background: rgba(200,16,46,.2); border: 1px solid rgba(200,16,46,.35); color: var(--red);
+      padding: .25rem .65rem; border-radius: 4px; margin-bottom: .75rem;
+    }
+    .mini { margin-top: .9rem; display: flex; flex-direction: column; gap: .45rem; }
+    .mini li {
+      font-size: .88rem; color: rgba(255,255,255,.75);
+      padding-left: 1.1rem; position: relative;
+    }
+    .mini li::before {
+      content: '›'; position: absolute; left: 0;
+      color: var(--gold); font-weight: 700;
+    }
+    .mini li strong { color: #fff; }
+
+    /* Price cards */
+    .price { position: relative; text-align: center; }
+    .price h3 { font-size: 1.5rem; }
+    .price__num {
+      font-family: var(--font-display); font-size: 3.5rem; font-weight: 900;
+      color: var(--white); line-height: 1; margin: .75rem 0 1.25rem;
+      transition: transform .2s;
+    }
+    .price--featured {
+      background: linear-gradient(145deg, #12255e, #0e1d4a);
+      border: 1px solid rgba(200,16,46,.45);
+      box-shadow: 0 0 40px rgba(200,16,46,.15);
+    }
+    .ribbon {
+      position: absolute; top: -1px; right: 1.25rem;
+      background: var(--red);
+      font-family: var(--font-display); font-size: .75rem; font-weight: 800;
+      letter-spacing: .1em; text-transform: uppercase; color: #fff;
+      padding: .3rem .8rem; border-radius: 0 0 8px 8px;
+    }
+    .bullets { margin-top: .75rem; display: flex; flex-direction: column; gap: .5rem; }
+    .bullets li {
+      font-size: .9rem; color: rgba(255,255,255,.72);
+      display: flex; gap: .6rem; align-items: flex-start;
+    }
+    .bullets li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .price .bullets { text-align: left; margin-bottom: 1.5rem; }
+
+    /* ─── MAP ────────────────────────────────────────── */
+    .mapWrap {
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .parkMap { width: 100%; height: auto; display: block; color: #fff; }
+    .mapLegend {
+      display: flex; flex-wrap: wrap; gap: 1.2rem;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--card-border);
+    }
+    .legendItem {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .85rem; color: var(--muted);
+    }
+
+    /* ─── DINING ─────────────────────────────────────── */
+    .menu { margin-top: 1rem; }
+    .menu__group {
+      font-family: var(--font-display); font-size: .8rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gold); margin: 1rem 0 .35rem;
+    }
+    .menu__row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: .45rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      font-size: .9rem;
+    }
+    .menu__row:last-child { border-bottom: none; }
+    .menu__row span:last-child {
+      font-family: var(--font-display); font-size: 1rem; font-weight: 700;
+      color: var(--gold); flex-shrink: 0; margin-left: 1rem;
+    }
+
+    /* ─── NOTE / CALLOUT ─────────────────────────────── */
+    .note {
+      margin-top: 2rem; padding: 1.2rem 1.5rem;
+      background: rgba(245,166,35,.08); border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0; font-size: .9rem;
+      color: rgba(255,255,255,.8);
+    }
+    .note .muted { color: var(--muted); margin-left: .5rem; }
+
+    .callout {
+      margin-top: 2.5rem;
+      background: rgba(200,16,46,.08); border: 1px solid rgba(200,16,46,.2);
+      border-radius: var(--radius); padding: 1.75rem 2rem;
+      display: flex; gap: 1.5rem; align-items: center;
+    }
+    .callout__title {
+      font-family: var(--font-display); font-size: 1.25rem; font-weight: 800;
+      text-transform: uppercase; color: #fff; margin-bottom: .35rem;
+    }
+    .muted { color: var(--muted); }
+
+    /* ─── DIRECTIONS ─────────────────────────────────── */
+    .directions { margin-top: 2.5rem; }
+    .directions h3 {
+      font-family: var(--font-display); font-size: 1.5rem; font-weight: 800;
+      text-transform: uppercase; color: #fff; margin-bottom: .5rem;
+    }
+    .directions .muted { margin-bottom: 1.25rem; display: block; }
+    .directions__steps { display: flex; flex-direction: column; gap: .75rem; }
+    .step {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: .95rem; color: rgba(255,255,255,.75);
+    }
+    .step__num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--red); color: #fff;
+      display: grid; place-items: center;
+      font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    /* ─── MERCH ──────────────────────────────────────── */
+    .merchItem { text-align: center; }
+    .merchItem__img { font-size: 3rem; margin-bottom: 1rem; }
+    .merchItem__price {
+      font-family: var(--font-display); font-size: 1.75rem; font-weight: 900;
+      color: var(--gold); margin-top: .5rem;
+    }
+
+    /* ─── ABOUT STRIP ────────────────────────────────── */
+    .about-strip {
+      background: linear-gradient(90deg, var(--red) 0%, #9e0b22 100%);
+      padding: 4rem 0;
+    }
+    .about-strip__inner {
+      display: flex; gap: 3rem; align-items: center; flex-wrap: wrap;
+    }
+    .about-strip__text { flex: 1; min-width: 260px; }
+    .about-strip__text h2 {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 900; text-transform: uppercase; line-height: 1;
+      margin-bottom: .75rem;
+    }
+    .about-strip__text p { font-size: 1rem; opacity: .88; max-width: 540px; line-height: 1.65; }
+    .about-strip__features {
+      display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: flex-end;
+    }
+    .feature-badge {
+      background: rgba(0,0,0,.25); border-radius: 10px;
+      padding: 1.25rem 1.5rem; text-align: center; min-width: 110px;
+    }
+    .feature-badge__icon { font-size: 2rem; }
+    .feature-badge__label {
+      margin-top: .5rem; font-family: var(--font-display); font-size: .85rem;
+      font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────── */
+    .footer {
+      background: #030b1c;
+      border-top: 1px solid rgba(200,16,46,.25);
+      padding: 4rem 0 2rem;
+    }
+    .footer__grid {
+      display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: start;
+    }
+    .footer .brand__name { font-size: 1.3rem; }
+    .footer p.muted { margin-top: .75rem; font-size: .85rem; }
+    .footer__links {
+      display: flex; flex-direction: column; gap: .75rem; align-items: flex-end;
+    }
+    .footer__links a {
+      font-family: var(--font-display); font-size: .95rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--muted); transition: color .2s;
+    }
+    .footer__links a:hover { color: var(--white); }
+    .footer__bottom {
+      margin-top: 3rem; padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,.07);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: .8rem; color: var(--muted);
+    }
+    .footer__bottom a { color: var(--muted); text-decoration: underline; }
+    .footer__bottom a:hover { color: #fff; }
+    .legal-links { display: flex; gap: 1.5rem; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero__grid { grid-template-columns: 1fr; }
+      .hero__card { display: none; }
+      .grid--4 { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 768px) {
+      .navToggle { display: flex; }
+      .nav {
+        display: none; position: fixed; top: 68px; left: 0; right: 0;
+        background: rgba(5,17,42,.97); backdrop-filter: blur(16px);
+        flex-direction: column; padding: 1.5rem;
+        border-bottom: 1px solid rgba(200,16,46,.3);
+        gap: .25rem;
+      }
+      .nav.open { display: flex; }
+      .nav a { padding: .75rem 1rem; font-size: 1.15rem; }
+      .nav__cta { margin: .5rem 0 0; padding: .75rem 1rem !important; }
+      .grid--2, .grid--3 { grid-template-columns: 1fr; }
+      .grid--4 { grid-template-columns: repeat(2,1fr); }
+      .hero__stats { gap: 1.5rem; }
+      .footer__grid { grid-template-columns: 1fr; }
+      .footer__links { align-items: flex-start; }
+      .about-strip__inner { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .grid--4 { grid-template-columns: 1fr; }
+      .hero__copy h1 { font-size: 2.8rem; }
+      .hero__cta { flex-direction: column; }
+      .btn--full { width: 100%; }
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero__copy > * { animation: fadeUp .6s var(--ease) both; }
+    .hero__copy .pill        { animation-delay: .05s; }
+    .hero__copy h1           { animation-delay: .15s; }
+    .hero__copy > p          { animation-delay: .25s; }
+    .hero__cta               { animation-delay: .35s; }
+    .hero__stats             { animation-delay: .45s; }
+    .hero__card { animation: fadeUp .6s var(--ease) .3s both; }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .55s var(--ease), transform .55s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ── HEADER ──────────────────────────────────────── -->
+  <header class="header" id="top">
+    <div class="container header__inner">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true">🏆</div>
+        <div class="brand__text">
+          <div class="brand__name">Ultimate Sports World</div>
+          <div class="brand__tag">Play the Legends • Live the Hype</div>
+        </div>
+      </div>
+
+      <button class="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="siteNav">
+        <a href="#about">About</a>
+        <a href="#lands">Lands</a>
+        <a href="#map">Map</a>
+        <a href="#tickets">Tickets</a>
+        <a href="#dining">Dining</a>
+        <a href="#vip">VIP</a>
+        <a href="#stay">Stay</a>
+        <a href="#merch">Shop</a>
+        <a href="#tickets" class="nav__cta">Buy Tickets</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ── HERO ───────────────────────────────────────── -->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="pill">Las Vegas, Nevada</p>
+          <h1>The ultimate<br><em>sports world.</em><br>No off-season.</h1>
+          <p>Six iconic lands, world-class thrill rides, and game-day energy every single day. Ultimate Sports World is where fans become legends.</p>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="#tickets">Buy Tickets</a>
+            <a class="btn btn--ghost" href="#lands">Explore the Lands</a>
+          </div>
+          <div class="hero__stats">
+            <div class="stat">
+              <div class="stat__num">6<span>+</span></div>
+              <div class="stat__label">Themed Lands</div>
+            </div>
+            <div class="stat">
+              <div class="stat__num">15<span>+</span></div>
+              <div class="stat__label">Attractions</div>
+            </div>
+            <div class="stat">
+              <div class="stat__num">365</div>
+              <div class="stat__label">Days Open</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero__card" aria-label="Quick park facts">
+          <h3>Park At a Glance</h3>
+          <div class="card-stat">
+            <span class="card-stat__label">Location</span>
+            <span class="card-stat__val">Las Vegas, NV</span>
+          </div>
+          <div class="card-stat">
+            <span class="card-stat__label">1-Day Ticket from</span>
+            <span class="card-stat__val red">$79</span>
+          </div>
+          <div class="card-stat">
+            <span class="card-stat__label">Annual Pass from</span>
+            <span class="card-stat__val">$250</span>
+          </div>
+          <div class="card-stat">
+            <span class="card-stat__label">VIP Victory Pass</span>
+            <span class="card-stat__val gold">+$20 / day</span>
+          </div>
+          <div class="card-stat">
+            <span class="card-stat__label">Airport Shuttle</span>
+            <span class="card-stat__val">$15 from LAS</span>
+          </div>
+          <a class="btn btn--primary btn--full" href="#tickets" style="margin-top:1.5rem;">View All Tickets →</a>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ── ABOUT STRIP ─────────────────────────────────── -->
+    <div class="about-strip" id="about">
+      <div class="container about-strip__inner">
+        <div class="about-strip__text reveal">
+          <h2>Where Legends<br>Come to Play</h2>
+          <p>Ultimate Sports World brings the world's biggest sports leagues to life in the heart of Las Vegas. From NBA arenas to NFL stadiums, every step is a highlight reel. Built for fans, families, and thrill-seekers of every level.</p>
+        </div>
+        <div class="about-strip__features reveal">
+          <div class="feature-badge">
+            <div class="feature-badge__icon">🎢</div>
+            <div class="feature-badge__label">Thrill Rides</div>
+          </div>
+          <div class="feature-badge">
+            <div class="feature-badge__icon">🍔</div>
+            <div class="feature-badge__label">Game-Day Dining</div>
+          </div>
+          <div class="feature-badge">
+            <div class="feature-badge__icon">🏆</div>
+            <div class="feature-badge__label">VIP Access</div>
+          </div>
+          <div class="feature-badge">
+            <div class="feature-badge__icon">🏨</div>
+            <div class="feature-badge__label">On-Site Resort</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LANDS ──────────────────────────────────────── -->
+    <section class="section alt" id="lands">
+      <div class="container">
+        <div class="section__head reveal">
+          <div class="eyebrow">Explore the Park</div>
+          <h2>Lands &amp; Attractions</h2>
+          <div class="divider"></div>
+          <p>Six immersive sections: Champions Plaza at the center, surrounded by five league lands packed with rides and experiences.</p>
+        </div>
+
+        <div class="grid grid--3">
+          <article class="card card--land reveal">
+            <div class="tag">Hub</div>
+            <h3>Champions Plaza</h3>
+            <p>The trophy-filled heart of the park — Vegas energy, iconic meet-ups, and championship moments at every turn.</p>
+            <ul class="mini">
+              <li><strong>Hall of Legends</strong></li>
+              <li><strong>The Trophy Tower</strong></li>
+              <li><strong>Victory Circle</strong> — Putt-Putt</li>
+              <li><strong>The Winning Circle</strong> — Casino &amp; Sports Betting</li>
+            </ul>
+          </article>
+
+          <article class="card card--land reveal">
+            <div class="tag">NBA Land</div>
+            <h3>NBA Land</h3>
+            <p>Arena lights, buzzer-beaters, and highlight-reel basketball energy from tip-off to final horn.</p>
+            <ul class="mini">
+              <li><strong>Buzzer Beater</strong></li>
+              <li><strong>Fast Break</strong></li>
+              <li><strong>Tip-Off Spin</strong></li>
+              <li><strong>Above the Rim</strong></li>
+            </ul>
+          </article>
+
+          <article class="card card--land reveal">
+            <div class="tag">NHL Land</div>
+            <h3>NHL Land</h3>
+            <p>Ice, speed, and overtime thrills with a full rink-style atmosphere and frozen action around every corner.</p>
+            <ul class="mini">
+              <li><strong>Hat Trick</strong></li>
+              <li><strong>Breakaway</strong></li>
+              <li><strong>Penalty Box</strong></li>
+            </ul>
+          </article>
+
+          <article class="card card--land reveal">
+            <div class="tag">MLB Land</div>
+            <h3>MLB Land</h3>
+            <p>Classic ballpark vibes, big hits, and walk-off celebrations in a land built for the love of the game.</p>
+            <ul class="mini">
+              <li><strong>Grand Slam</strong></li>
+              <li><strong>The Bullpen</strong></li>
+              <li><strong>Walkoff Whirl</strong></li>
+            </ul>
+          </article>
+
+          <article class="card card--land reveal">
+            <div class="tag">MLS Land</div>
+            <h3>MLS Land</h3>
+            <p>Match-day chants, street-soccer energy, and the beautiful game brought to life in every corner.</p>
+            <ul class="mini">
+              <li><strong>Corner Kick</strong></li>
+              <li><strong>Golden Goal</strong></li>
+              <li><strong>Extra Time</strong></li>
+            </ul>
+          </article>
+
+          <article class="card card--land reveal">
+            <div class="tag">NFL Land</div>
+            <h3>NFL Land</h3>
+            <p>Prime-time game-day hype, big plays, and end-zone celebrations in the most electrifying land in the park.</p>
+            <ul class="mini">
+              <li><strong>Sunday Night Surge</strong></li>
+              <li><strong>Trench Warfare</strong></li>
+              <li><strong>End Zone</strong></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MAP ────────────────────────────────────────── -->
+    <section class="section" id="map">
+      <div class="container">
+        <div class="section__head reveal">
+          <div class="eyebrow">Find Your Way</div>
+          <h2>Park Map</h2>
+          <div class="divider"></div>
+          <p>Concept overview of themed areas, attractions, dining, services, and entertainment across the park.</p>
+        </div>
+
+        <div class="mapWrap reveal" role="img" aria-label="Simplified park map illustration">
+          <svg viewBox="0 0 1100 620" xmlns="http://www.w3.org/2000/svg" class="parkMap">
+            <defs>
+              <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="6" result="b"/>
+                <feColorMatrix in="b" type="matrix"
+                  values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .25 0" result="s"/>
+                <feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+
+            <rect x="20" y="20" width="1060" height="580" rx="34" fill="currentColor" fill-opacity=".06" />
+
+            <!-- Hub -->
+            <circle cx="560" cy="310" r="110" fill="currentColor" fill-opacity=".10" filter="url(#soft)"/>
+            <text x="560" y="302" text-anchor="middle" font-size="20" fill="currentColor" fill-opacity=".9" font-family="system-ui" font-weight="700">🏆</text>
+            <text x="560" y="324" text-anchor="middle" font-size="18" fill="currentColor" fill-opacity=".9" font-family="system-ui" font-weight="700">Champions Plaza</text>
+
+            <!-- Land zones -->
+            <path d="M240 120 Q 400 70 480 190 Q 340 260 220 190 Z" fill="currentColor" fill-opacity=".08"/>
+            <text x="345" y="162" text-anchor="middle" font-size="16" fill="currentColor" fill-opacity=".8" font-family="system-ui" font-weight="600">NBA Land</text>
+
+            <path d="M760 120 Q 900 90 980 210 Q 840 260 730 200 Z" fill="currentColor" fill-opacity=".08"/>
+            <text x="858" y="172" text-anchor="middle" font-size="16" fill="currentColor" fill-opacity=".8" font-family="system-ui" font-weight="600">NFL Land</text>
+
+            <path d="M170 340 Q 250 260 360 360 Q 270 460 160 430 Z" fill="currentColor" fill-opacity=".08"/>
+            <text x="255" y="382" text-anchor="middle" font-size="16" fill="currentColor" fill-opacity=".8" font-family="system-ui" font-weight="600">NHL Land</text>
+
+            <path d="M730 380 Q 880 290 1020 380 Q 900 520 760 500 Z" fill="currentColor" fill-opacity=".08"/>
+            <text x="888" y="418" text-anchor="middle" font-size="16" fill="currentColor" fill-opacity=".8" font-family="system-ui" font-weight="600">MLB Land</text>
+
+            <path d="M420 500 Q 560 440 690 520 Q 560 610 420 570 Z" fill="currentColor" fill-opacity=".08"/>
+            <text x="554" y="543" text-anchor="middle" font-size="16" fill="currentColor" fill-opacity=".8" font-family="system-ui" font-weight="600">MLS Land</text>
+
+            <!-- Paths -->
+            <path d="M350 210 C 430 260 470 270 510 260" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="10" stroke-linecap="round"/>
+            <path d="M780 240 C 700 280 660 290 640 285" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="10" stroke-linecap="round"/>
+            <path d="M340 390 C 420 350 450 340 470 335" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="10" stroke-linecap="round"/>
+            <path d="M740 445 C 690 390 660 360 650 345" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="10" stroke-linecap="round"/>
+            <path d="M560 420 C 560 450 560 470 560 495" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="10" stroke-linecap="round"/>
+
+            <!-- Legend icons -->
+            <g fill="currentColor" fill-opacity=".65" font-family="system-ui" font-size="15">
+              <text x="510" y="248">🎢 Rides</text>
+              <text x="510" y="275">🍔 Dining</text>
+              <text x="510" y="302">🛍 Merch</text>
+              <text x="510" y="329">🚻 Restrooms</text>
+              <text x="510" y="356">ℹ️ Guest Services</text>
+            </g>
+          </svg>
+
+          <div class="mapLegend">
+            <div class="legendItem"><span>🎢</span> Major Rides</div>
+            <div class="legendItem"><span>🍔</span> Dining</div>
+            <div class="legendItem"><span>🛍</span> Shops</div>
+            <div class="legendItem"><span>ℹ️</span> Guest Services</div>
+            <div class="legendItem"><span>🚻</span> Restrooms</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TICKETS ────────────────────────────────────── -->
+    <section class="section alt" id="tickets">
+      <div class="container">
+        <div class="section__head reveal">
+          <div class="eyebrow">Admission</div>
+          <h2>Tickets &amp; Passes</h2>
+          <div class="divider"></div>
+          <p>Simple, transparent pricing for day trips and repeat visitors alike.</p>
+        </div>
+
+        <div class="grid grid--3">
+          <article class="card price reveal">
+            <h3>1-Day Pass</h3>
+            <p class="price__num" data-price="79">$79</p>
+            <ul class="bullets">
+              <li>All lands &amp; standard rides</li>
+              <li>Access to live shows</li>
+              <li>Mobile ride times included</li>
+            </ul>
+            <a class="btn btn--ghost btn--full" href="#vip">Add Victory Pass +$20</a>
+          </article>
+
+          <article class="card price price--featured reveal">
+            <div class="ribbon">Most Popular</div>
+            <h3>2-Day Pass</h3>
+            <p class="price__num" data-price="139">$139</p>
+            <ul class="bullets">
+              <li>Best value for tourists</li>
+              <li>Return for the night show</li>
+              <li>Re-ride your favorites</li>
+            </ul>
+            <a class="btn btn--primary btn--full" href="#tickets">Get Your Pass</a>
+          </article>
+
+          <article class="card price reveal">
+            <h3>Annual Pass</h3>
+            <p class="price__num" data-price="250">$250</p>
+            <ul class="bullets">
+              <li>Exclusive passholder discounts</li>
+              <li>Reserved parking area</li>
+              <li>Early entry on select days</li>
+            </ul>
+            <a class="btn btn--gold btn--full" href="#merch">Shop Passholder Merch</a>
+          </article>
+        </div>
+
+        <div class="note reveal">
+          <strong>Victory Pass add-on:</strong> +$20 per ticket/day for priority entry, fast lanes, and reserved show seating.
+          <span class="muted">ESPN+ members receive 15% off eligible adult tickets.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DINING ─────────────────────────────────────── -->
+    <section class="section" id="dining">
+      <div class="container">
+        <div class="section__head reveal">
+          <div class="eyebrow">Food &amp; Beverage</div>
+          <h2>Game-Day Dining</h2>
+          <div class="divider"></div>
+          <p>Two full-service restaurants designed for the hangout-and-highlight experience.</p>
+        </div>
+
+        <div class="grid grid--2">
+          <article class="card reveal">
+            <h3>The Championship Café</h3>
+            <p style="margin-bottom:.5rem;">Morning fuel for your best day. Breakfast &amp; brunch served daily.</p>
+            <div class="menu">
+              <div class="menu__row"><span>MVP Loaded Breakfast</span><span>$18.99</span></div>
+              <div class="menu__row"><span>Offsides Omelette</span><span>$13.99</span></div>
+              <div class="menu__row"><span>Champion Chia Bowl</span><span>$10.99</span></div>
+              <div class="menu__row"><span>Slapshot Strawberry Crêpes</span><span>$11.99</span></div>
+              <div class="menu__row"><span>Slam Dunk Smoothie</span><span>$7.99</span></div>
+              <div class="menu__row"><span>Olympic Orange Juice</span><span>$4.99</span></div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <h3>The Golden Grill</h3>
+            <p style="margin-bottom:.5rem;">Lunch &amp; dinner with full sports-bar energy. Open all day.</p>
+            <div class="menu">
+              <div class="menu__group">Main Course</div>
+              <div class="menu__row"><span>Championship Cheeseburger</span><span>$14.99</span></div>
+              <div class="menu__row"><span>Ball Boy BLT</span><span>$12.99</span></div>
+              <div class="menu__row"><span>Three-Point Tacos</span><span>$9.99</span></div>
+              <div class="menu__row"><span>Sudden Death Chicken Sandwich</span><span>$12.99</span></div>
+              <div class="menu__row"><span>Rebound Ribs</span><span>$20.99</span></div>
+
+              <div class="menu__group">Appetizers</div>
+              <div class="menu__row"><span>Free-Throw French Fries</span><span>$5.99</span></div>
+              <div class="menu__row"><span>Captain Chicken Nuggets</span><span>$8.99</span></div>
+              <div class="menu__row"><span>Sportsmanship Salad</span><span>$4.99</span></div>
+
+              <div class="menu__group">Drinks</div>
+              <div class="menu__row"><span>Mercy Rule Milkshake</span><span>$7.99</span></div>
+              <div class="menu__row"><span>Winners Water</span><span>$1.99</span></div>
+              <div class="menu__row"><span>Championship Cola</span><span>$3.59</span></div>
+              <div class="menu__row"><span>Long Jump Lemonade</span><span>$4.99</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── VIP ────────────────────────────────────────── -->
+    <section class="section alt" id="vip">
+      <div class="container">
+        <div class="section__head reveal">
+          <div class="eyebrow">Premium Experiences</div>
+          <h2>VIP Access</h2>
+          <div class="divider"></div>
+          <p>Premium options that feel like being on the roster — skip the lines, own the day.</p>
+        </div>
+
+        <div class="grid grid--3">
+          <article class="card reveal">
+            <div class="tag">Add-On</div>
+            <h3>Victory Pass</h3>
+            <p class="muted" style="margin-bottom:1rem;">+$20 per ticket / day</p>
+            <ul class="bullets">
+              <li>Priority entry lane</li>
+              <li>Express access on select rides</li>
+              <li>Reserved viewing for night show</li>
+              <li>Mobile-order fast pickup</li>
+              <li>Exclusive badge &amp; merch discount</li>
+            </ul>
+          </article>
+
+          <article class="card reveal">
+            <div class="tag">Group</div>
+            <h3>Sideline Suite</h3>
+            <p class="muted" style="margin-bottom:1rem;">Small groups up to 8</p>
+            <ul class="bullets">
+              <li>Private lounge access</li>
+              <li>Hosted ride route planning</li>
+              <li>Reserved dining window</li>
+            </ul>
+          </article>
+
+          <article class="card reveal">
+            <div class="tag">Behind the Scenes</div>
+            <h3>Backstage Tour</h3>
+            <p class="muted" style="margin-bottom:1rem;">Daily — limited spots</p>
+            <ul class="bullets">
+              <li>Coaster operations walkthrough</li>
+              <li>Costume &amp; prop studio visit</li>
+              <li>Exclusive "starter horn" sendoff</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout reveal">
+          <div>
+            <div class="callout__title">Guest Services &amp; Accessibility</div>
+            <p class="muted">Fast passes, full accessibility accommodations, and app integration are built into every visit. Our team is here to make your day unforgettable.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── STAY & TRAVEL ──────────────────────────────── -->
+    <section class="section" id="stay">
+      <div class="container">
+        <div class="section__head reveal">
+          <div class="eyebrow">Plan Your Visit</div>
+          <h2>Where to Stay &amp; How to Get Here</h2>
+          <div class="divider"></div>
+          <p>On-property lodging with seamless access to the Strip and the airport.</p>
+        </div>
+
+        <div class="grid grid--2">
+          <article class="card reveal">
+            <div class="tag">On-Site</div>
+            <h3>Champions Resort</h3>
+            <ul class="bullets">
+              <li>Free guest shuttle: hotel ⇄ park entrance</li>
+              <li>Free pick-up from select Las Vegas Blvd hotels</li>
+              <li>Pool deck &amp; recovery lounge</li>
+              <li>Exclusive passholder perks &amp; package deals</li>
+            </ul>
+          </article>
+
+          <article class="card reveal">
+            <div class="tag">Parking &amp; Transit</div>
+            <h3>Transportation</h3>
+            <ul class="bullets">
+              <li>Free covered parking + EV charging + accessible spaces</li>
+              <li>Exclusive passholder parking area</li>
+              <li>Overnight RV hookups available</li>
+              <li>Airport shuttle: $15 from Harry Reid International (LAS)</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="directions reveal">
+          <h3>Directions from Harry Reid International Airport (LAS)</h3>
+          <span class="muted">Take the airport shuttle ($15) or rideshare to Ultimate Sports World. Typical drive time is 15–25 minutes depending on traffic.</span>
+          <div class="directions__steps">
+            <div class="step">
+              <span class="step__num">1</span>
+              <span>Exit LAS and head toward Las Vegas Blvd</span>
+            </div>
+            <div class="step">
+              <span class="step__num">2</span>
+              <span>Follow signs toward the Strip area</span>
+            </div>
+            <div class="step">
+              <span class="step__num">3</span>
+              <span>Arrive at the Ultimate Sports World drop-off loop (Guest Services)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MERCH ──────────────────────────────────────── -->
+    <section class="section alt" id="merch">
+      <div class="container">
+        <div class="section__head reveal">
+          <div class="eyebrow">Official Store</div>
+          <h2>Merchandise</h2>
+          <div class="divider"></div>
+          <p>Take a piece of the park home. Available in-park at all shops and online.</p>
+        </div>
+
+        <div class="grid grid--4">
+          <article class="card merchItem reveal">
+            <div class="merchItem__img">👕</div>
+            <h3>Team Tee</h3>
+            <p class="muted">Sizes XXS–XXXL</p>
+            <div class="merchItem__price">$35</div>
+          </article>
+
+          <article class="card merchItem reveal">
+            <div class="merchItem__img">🧢</div>
+            <h3>Champions Cap</h3>
+            <p class="muted">Adjustable fit</p>
+            <div class="merchItem__price">$50</div>
+          </article>
+
+          <article class="card merchItem reveal">
+            <div class="merchItem__img">🧥</div>
+            <h3>Hype Hoodie</h3>
+            <p class="muted">Heavyweight fleece</p>
+            <div class="merchItem__price">$70</div>
+          </article>
+
+          <article class="card merchItem reveal">
+            <div class="merchItem__img">🏐</div>
+            <h3>Mini Ball Set</h3>
+            <p class="muted">Collectible series</p>
+            <div class="merchItem__price">$60</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ─────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="brand">
+            <div class="brand__mark" aria-hidden="true">🏆</div>
+            <div class="brand__text">
+              <div class="brand__name">Ultimate Sports World</div>
+              <div class="brand__tag">Las Vegas Sports Theme Park</div>
+            </div>
+          </div>
+          <p class="muted" style="margin-top:.85rem; max-width:340px; font-size:.85rem; line-height:1.6;">The world's ultimate sports-themed destination. Six lands, limitless energy, and no off-season — ever.</p>
+        </div>
+
+        <nav class="footer__links" aria-label="Footer navigation">
+          <a href="#about">About</a>
+          <a href="#lands">Lands &amp; Attractions</a>
+          <a href="#tickets">Tickets</a>
+          <a href="#vip">VIP</a>
+          <a href="#dining">Dining</a>
+          <a href="#stay">Travel &amp; Stay</a>
+          <a href="#merch">Shop</a>
+          <a href="#top">↑ Back to Top</a>
+        </nav>
+      </div>
+
+      <div class="footer__bottom">
+        <span>© 2025 Ultimate Sports World, Las Vegas. All rights reserved.</span>
+        <div class="legal-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Accessibility</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Nav toggle ──────────────────────────────── */
+    const btn = document.querySelector('.navToggle');
+    const nav = document.querySelector('#siteNav');
+
+    function closeNav() {
+      nav?.classList.remove('open');
+      btn?.setAttribute('aria-expanded', 'false');
+    }
+
+    btn?.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+
+    /* ── Smooth scroll ───────────────────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const id = link.getAttribute('href');
+        if (!id || id === '#') return;
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        closeNav();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', id);
+      });
+    });
+
+    /* ── Active nav highlight ────────────────────── */
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navLinks = document.querySelectorAll('.nav a[href^="#"]');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+    /* ── Scroll reveal ───────────────────────────── */
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    /* ── Price pop ───────────────────────────────── */
+    document.querySelectorAll('[data-price]').forEach(p => {
+      p.addEventListener('mouseenter', () => p.style.transform = 'translateY(-3px) scale(1.04)');
+      p.addEventListener('mouseleave', () => p.style.transform = '');
+    });
+  </script>
+</body>
+</html>
